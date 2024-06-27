@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@font-face {
+  font-family: "game"; /* フォントファミリーの名前を指定 */
+  src: url("./assets/misaki_gothic_2nd.ttf") format("truetype"); /* フォントファイルへのパスを指定 */
+  /* 他のスタイル設定（オプション） */
+}
+* {
+  padding: 0px;
+  margin: 0px;
+}
+body {
+  padding: 0px;
+  margin: 0px;
+  /* font-family: "Courier New", Courier, monospace !important; */
+  font-family: "game";
+}
