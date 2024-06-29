@@ -1,5 +1,4 @@
-import * as React from "react";
-import { Component, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Map from "./Map";
 import usePlayer from "./customhooks/usePlayer";
 import useNPCs from "./customhooks/useNPCs";
@@ -8,8 +7,8 @@ import BattleScene from "./components/BattleScene";
 import { motion } from "framer-motion";
 import { encounter } from "./helpers/functions";
 import { Player } from "./types/playerTypes";
-type Props = { player: Player };
-function Game({ player }: Props) {
+type Props = { player: Player; onSavePlayer: (player: Player) => void };
+function Game({ player, onSavePlayer }: Props) {
   //values -----------------------------------------------------------------------
 
   const gameLoopRef = useRef<any>(null);
@@ -21,6 +20,7 @@ function Game({ player }: Props) {
   );
   let encounterCoolDown = 0;
   const [fieldState, setfieldState] = useState<"walk" | "battle">("walk");
+
   // useEffects -----------------------------------------------------------------------
   useEffect(() => {
     gameloop();
@@ -48,6 +48,7 @@ function Game({ player }: Props) {
 
   const handleBattleEnd = (player: Player) => {
     setfieldState("walk");
+    onSavePlayer(player);
   };
   return (
     <>

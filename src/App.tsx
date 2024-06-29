@@ -1,10 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Game from "./Game";
 import { playerDamiData } from "./damidata/playerDamiData";
+import { Player } from "./types/playerTypes";
 function App() {
+  const [player, setPlayer] = useState<Player>();
+
+  useEffect(() => {
+    setPlayer(playerDamiData);
+  }, []);
+
+  const handleSavePlayer = (updatedPlayer: Player) => {
+    setPlayer(updatedPlayer);
+  };
+
   return (
     <>
-      <Game player={playerDamiData}></Game>
+      {player && <Game player={player} onSavePlayer={handleSavePlayer}></Game>}
     </>
   );
 }
