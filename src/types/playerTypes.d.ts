@@ -12,7 +12,7 @@ export type picturePxType = {
 };
 
 export type dialogType = string[];
-export type npcInstaceType = {
+export type Npc = {
   id: number;
   x: number;
   y: number;

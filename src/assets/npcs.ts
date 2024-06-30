@@ -1,6 +1,6 @@
-import { npcInstaceType } from "../types/playerTypes";
+import { Npc } from "../types/playerTypes";
 
-export const npcInstances: npcInstaceType[] = [
+export const npcInstances: Npc[] = [
   {
     id: 123123,
     x: 605,

@@ -1,12 +1,12 @@
 import * as React from "react";
 import { Component, useEffect, useState } from "react";
 import * as Const from "../const";
-import { npcInstaceType, playerPosType } from "../types/playerTypes";
+import { Npc, playerPosType } from "../types/playerTypes";
 import { npcInstances } from "../assets/npcs";
 import { useAppSelector } from "../store/store";
 type Props = { mapState: string };
 function useNPCs({ mapState }: Props) {
-  const [npcArray, setNpcArray] = useState<npcInstaceType[]>(npcInstances);
+  const [npcArray, setNpcArray] = useState<Npc[]>(npcInstances);
   const NPCs = (player: playerPosType) => {
     const npcStyle = (npcX: number, npcY: number): React.CSSProperties => {
       return {

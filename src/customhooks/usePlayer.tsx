@@ -3,19 +3,19 @@ import { Component, useEffect, useState } from "react";
 import * as Const from "../const";
 import {
   directionType,
-  npcInstaceType,
+  Npc,
   picturePxType,
   playerPosType,
 } from "../types/playerTypes";
 import useDirectionHandler from "./useDirectionHandler";
 import useCollisionController from "./useCollisionController";
-function usePlayer(npcArray: npcInstaceType[], initialPosition: playerPosType) {
+function usePlayer(npcArray: Npc[], initialPosition: playerPosType) {
   const direction = useDirectionHandler();
   const [playerPos, setPlayerPos] = useState<playerPosType>(initialPosition);
   const [isMoving, setIsMoving] = useState<boolean>(true);
   const [preCollisionDirection, setPreCollisionDirection] =
     useState<directionType>();
-
+  const [collisionNpc, setcollisionNpc] = useState<Npc | null>(null);
   const [frameCount, setFrameCount] = useState<number>(0);
   const [picturePx, setPicturePx] = useState<picturePxType>({
     column: 0,
@@ -25,9 +25,6 @@ function usePlayer(npcArray: npcInstaceType[], initialPosition: playerPosType) {
   const [prePictureDirection, setPrePictureDirection] =
     useState<directionType>();
 
-  useEffect(() => {
-    console.log(playerPos);
-  }, [playerPos]);
   const {
     collisionController,
     npcCollisionController,
@@ -43,9 +40,16 @@ function usePlayer(npcArray: npcInstaceType[], initialPosition: playerPosType) {
     const isCollision = collisionController();
     const collisionNpc = npcCollisionController();
     const collisionDoor = doorCollisionController();
-    if (isCollision || collisionNpc) {
+
+    if (isCollision) {
       setIsMoving(false);
       setPreCollisionDirection(direction);
+    }
+
+    if (collisionNpc) {
+      setIsMoving(false);
+      setPreCollisionDirection(direction);
+      setcollisionNpc(collisionNpc);
     }
 
     if (collisionDoor) {
@@ -136,6 +140,8 @@ function usePlayer(npcArray: npcInstaceType[], initialPosition: playerPosType) {
     direction,
     playerPos,
     isMoving,
+    collisionNpc,
+    setcollisionNpc,
     Player,
     playerUpdate,
   };

@@ -1,11 +1,7 @@
 import * as React from "react";
 import { Component, useState } from "react";
 import { collisionArray, mapDamiData } from "../assets/collisionTiles";
-import {
-  directionType,
-  npcInstaceType,
-  playerPosType,
-} from "../types/playerTypes";
+import { directionType, Npc, playerPosType } from "../types/playerTypes";
 import { collisionChecker } from "../helpers/collisionChecker";
 import { useAppSelector } from "../store/store";
 import { doorAssets } from "../assets/doors";
@@ -14,7 +10,7 @@ import { doorAssetType } from "../types/mapTypes";
 type useCollisionControllerProps = {
   active: playerPosType;
   direction: directionType;
-  npcArray: npcInstaceType[];
+  npcArray: Npc[];
 };
 function useCollisionController({
   active,
@@ -38,7 +34,7 @@ function useCollisionController({
     return isCollision;
   };
 
-  let CollisionNpc: npcInstaceType | null;
+  let CollisionNpc: Npc | null;
   const npcCollisionController = () => {
     npcArray.forEach((collisionBlock, i) => {
       collisionChecker({

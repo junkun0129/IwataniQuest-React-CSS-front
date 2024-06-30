@@ -7,6 +7,7 @@ import BattleScene from "./components/BattleScene";
 import { motion } from "framer-motion";
 import { encounter } from "./helpers/functions";
 import { Player } from "./types/playerTypes";
+export type FieldState = "walk" | "battle" | "event";
 type Props = { player: Player; onSavePlayer: (player: Player) => void };
 function Game({ player, onSavePlayer }: Props) {
   //values -----------------------------------------------------------------------
@@ -14,13 +15,19 @@ function Game({ player, onSavePlayer }: Props) {
   const gameLoopRef = useRef<any>(null);
 
   const { NPCs, npcArray } = useNPCs({ mapState: "dami1" });
-  const { direction, isMoving, playerPos, Player, playerUpdate } = usePlayer(
-    npcArray,
-    player.position
-  );
+  const [fieldState, setfieldState] = useState<FieldState>("walk");
+  const {
+    direction,
+    isMoving,
+    playerPos,
+    collisionNpc,
+    Player,
+    playerUpdate,
+    setcollisionNpc,
+  } = usePlayer(npcArray, player.position);
   let encounterCoolDown = 0;
-  const [fieldState, setfieldState] = useState<"walk" | "battle">("walk");
 
+  const [isDialogShow, setisDialogShow] = useState<boolean>(false);
   // useEffects -----------------------------------------------------------------------
   useEffect(() => {
     gameloop();
@@ -29,12 +36,19 @@ function Game({ player, onSavePlayer }: Props) {
     };
   }, [direction, isMoving]);
 
+  useEffect(() => {
+    if (collisionNpc) {
+      setisDialogShow(true);
+      setfieldState("event");
+    }
+  }, [collisionNpc]);
+
   //const functions -----------------------------------------------------------------------
   const gameloop = () => {
-    if (fieldState !== "battle") {
-      handleEncount();
+    if (fieldState === "walk") {
+      // handleEncount();
+      playerUpdate();
     }
-    playerUpdate();
     gameLoopRef.current = requestAnimationFrame(gameloop);
   };
 
@@ -49,6 +63,12 @@ function Game({ player, onSavePlayer }: Props) {
   const handleBattleEnd = (player: Player) => {
     setfieldState("walk");
     onSavePlayer(player);
+  };
+
+  const handleDialogClose = () => {
+    setfieldState("walk");
+    setisDialogShow(false);
+    setcollisionNpc(null);
   };
   return (
     <>
@@ -68,7 +88,12 @@ function Game({ player, onSavePlayer }: Props) {
         >
           <Map x={playerPos.x} y={playerPos.y} />
           <NPCs x={playerPos.x} y={playerPos.y} />
-          <Dialog></Dialog>
+          {!!isDialogShow && !!collisionNpc && (
+            <Dialog
+              collisionNpc={collisionNpc}
+              onDialogClose={handleDialogClose}
+            ></Dialog>
+          )}
           <Player />
         </motion.div>
         <motion.div
