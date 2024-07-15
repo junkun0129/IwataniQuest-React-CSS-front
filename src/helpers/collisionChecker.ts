@@ -1,4 +1,3 @@
-import { collisionArray } from "../assets/collisionTiles";
 import * as Const from "../const";
 import { directionType } from "../types/playerTypes";
 

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import Game from "./Game";
 import { playerDamiData } from "./damidata/playerDamiData";
 import { Player } from "./types/playerTypes";
+import Zakoowl from "./components/enemies/Zakoowl";
+import Ameiba from "./components/enemies/Ameiba";
 function App() {
   const [player, setPlayer] = useState<Player>();
 

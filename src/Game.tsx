@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import Map from "./Map";
 import usePlayer from "./customhooks/usePlayer";
 import useNPCs from "./customhooks/useNPCs";
 import Dialog from "./Dialog";
@@ -7,8 +6,19 @@ import BattleScene from "./components/BattleScene";
 import { motion } from "framer-motion";
 import { encounter } from "./helpers/functions";
 import { Player } from "./types/playerTypes";
+import { DamyMaps, MapPropaty } from "./assets/map";
+import { mapedCollisionMapType } from "./types/mapTypes";
+import { getCollisionArray } from "./assets/collisionTiles";
+import FieldMap from "./FieldMap";
 export type FieldState = "walk" | "battle" | "event";
 type Props = { player: Player; onSavePlayer: (player: Player) => void };
+
+export type Map = {
+  name: string;
+  image: string;
+  collisionArray: mapedCollisionMapType[];
+};
+
 function Game({ player, onSavePlayer }: Props) {
   //values -----------------------------------------------------------------------
 
@@ -16,6 +26,8 @@ function Game({ player, onSavePlayer }: Props) {
 
   const { NPCs, npcArray } = useNPCs({ mapState: "dami1" });
   const [fieldState, setfieldState] = useState<FieldState>("walk");
+  const [currentMap, setCurrentMap] = useState<Map>();
+  const [mapName, setmapName] = useState<string>("dami1");
   const {
     direction,
     isMoving,
@@ -24,11 +36,22 @@ function Game({ player, onSavePlayer }: Props) {
     Player,
     playerUpdate,
     setcollisionNpc,
-  } = usePlayer(npcArray, player.position);
+  } = usePlayer(npcArray, player.position, currentMap, setmapName);
   let encounterCoolDown = 0;
 
   const [isDialogShow, setisDialogShow] = useState<boolean>(false);
   // useEffects -----------------------------------------------------------------------
+
+  useEffect(() => {
+    const rowMap: MapPropaty = DamyMaps[mapName];
+    const newCollisionArray = getCollisionArray(rowMap.collisionTile);
+    setCurrentMap({
+      name: rowMap.name,
+      image: rowMap.image,
+      collisionArray: newCollisionArray,
+    });
+  }, [mapName]);
+
   useEffect(() => {
     gameloop();
     return () => {
@@ -46,7 +69,7 @@ function Game({ player, onSavePlayer }: Props) {
   //const functions -----------------------------------------------------------------------
   const gameloop = () => {
     if (fieldState === "walk") {
-      // handleEncount();
+      handleEncount();
       playerUpdate();
     }
     gameLoopRef.current = requestAnimationFrame(gameloop);
@@ -86,7 +109,9 @@ function Game({ player, onSavePlayer }: Props) {
             fieldState === "battle" ? { display: "none" } : { display: "block" }
           }
         >
-          <Map x={playerPos.x} y={playerPos.y} />
+          {currentMap && (
+            <FieldMap x={playerPos.x} y={playerPos.y} currentMap={currentMap} />
+          )}
           <NPCs x={playerPos.x} y={playerPos.y} />
           {!!isDialogShow && !!collisionNpc && (
             <Dialog

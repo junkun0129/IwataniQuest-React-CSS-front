@@ -9,7 +9,13 @@ import {
 } from "../types/playerTypes";
 import useDirectionHandler from "./useDirectionHandler";
 import useCollisionController from "./useCollisionController";
-function usePlayer(npcArray: Npc[], initialPosition: playerPosType) {
+import { Map } from "../Game";
+function usePlayer(
+  npcArray: Npc[],
+  initialPosition: playerPosType,
+  currentMap: Map | undefined,
+  setMapName: (name: string) => void
+) {
   const direction = useDirectionHandler();
   const [playerPos, setPlayerPos] = useState<playerPosType>(initialPosition);
   const [isMoving, setIsMoving] = useState<boolean>(true);
@@ -37,9 +43,10 @@ function usePlayer(npcArray: Npc[], initialPosition: playerPosType) {
 
   //observe collision by player's position on the DOM
   useEffect(() => {
-    const isCollision = collisionController();
+    if (!currentMap) return;
+    const isCollision = collisionController(currentMap.collisionArray);
     const collisionNpc = npcCollisionController();
-    const collisionDoor = doorCollisionController();
+    const collisionDoor = doorCollisionController(currentMap.name);
 
     if (isCollision) {
       setIsMoving(false);
@@ -54,14 +61,16 @@ function usePlayer(npcArray: Npc[], initialPosition: playerPosType) {
 
     if (collisionDoor) {
       setPlayerPos(collisionDoor.toPlayerPos);
+      setMapName(collisionDoor.toMapName);
     }
   }, [playerPos]);
 
   //observe collision when player's direction changes
   useEffect(() => {
+    if (!currentMap) return;
     if (direction) {
       setPrePictureDirection(direction);
-      const isCollision = collisionController();
+      const isCollision = collisionController(currentMap.collisionArray);
       const isNpcCollision = npcCollisionController();
       if (isCollision || isNpcCollision) return;
     }
@@ -71,8 +80,9 @@ function usePlayer(npcArray: Npc[], initialPosition: playerPosType) {
   const directionHandler = (direction: directionType) => {
     let isCalled: boolean = false;
     if (!isMoving) return;
+    if (!currentMap) return;
     if (preCollisionDirection === direction) {
-      const isCollision = collisionController();
+      const isCollision = collisionController(currentMap.collisionArray);
       const isNpcCollision = npcCollisionController();
       if (isCollision || isNpcCollision) {
         isCalled = true;

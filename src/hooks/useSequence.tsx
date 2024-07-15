@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { enemiesType } from "../types/enemiesType";
 import { Player } from "../types/playerTypes";
-import { enemies } from "../assets/enemies";
+import { enemies, enemiesType } from "../assets/enemies";
 import { enemiesGenerate } from "../helpers/enemiesReducer";
 import { getRandomUniqueNumbers } from "../helpers/functions";
 import { useAnimate, useAnimation, useAnimationControls } from "framer-motion";
@@ -165,44 +164,58 @@ const useSequence = ({ player }: { player: Player }) => {
     targetIndex: number;
   }) => {
     const { label, ap, targetIndex } = selectedStats;
-    console.log(targetIndex);
-    const targetName = stats.enemies[targetIndex].name;
-    let newDialog: Dialog[] = [];
-    if (label === "attack") {
-      newDialog.push({
-        type: "result",
-        targetIndex,
-        text: `${targetName}にこうげき！！`,
+    console.log(label, "labelllll");
+    if (label === "attack" || label === "magic") {
+      const targetName = stats.enemies[targetIndex].name;
+      let newDialog: Dialog[] = [];
+      if (label === "attack") {
+        newDialog.push({
+          type: "result",
+          targetIndex,
+          text: `${targetName}にこうげき！！`,
+        });
+        newDialog.push({
+          type: "damage",
+          subject: "enemies",
+          targetIndex,
+          text: `${ap}ダメージ！！`,
+        });
+      } else {
+        newDialog.push({
+          type: "result",
+          text: `${targetName}に${label}を使用！`,
+        });
+        newDialog.push({
+          type: "attack",
+          subject: "enemies",
+          targetIndex,
+          text: `${ap}ダメージ！！`,
+        });
+      }
+
+      actionDispatch({
+        type: "player",
+        dp: stats.player.status.mp,
+        targetIndex: targetIndex,
       });
-      newDialog.push({
-        type: "damage",
-        subject: "enemies",
-        targetIndex,
-        text: `${ap}ダメージ！！`,
-      });
-    } else {
-      newDialog.push({
-        type: "result",
-        text: `${targetName}に${label}を使用！`,
-      });
-      newDialog.push({
-        type: "attack",
-        subject: "enemies",
-        targetIndex,
-        text: `${ap}ダメージ！！`,
-      });
+
+      changeState("sequence", "playerAttackResult");
+      changeState("dialog", newDialog);
+      changeState("nextSequence", "enemiesAttack");
+      changeState("selectedDialogIndex", 0);
     }
 
-    actionDispatch({
-      type: "player",
-      dp: stats.player.status.mp,
-      targetIndex: targetIndex,
-    });
+    if (label === "escape") {
+      let newDialog: Dialog[] = [
+        { type: "result", text: "にげた" },
+        { type: "result", text: "配送した" },
+      ];
 
-    changeState("sequence", "playerAttackResult");
-    changeState("dialog", newDialog);
-    changeState("nextSequence", "enemiesAttack");
-    changeState("selectedDialogIndex", 0);
+      changeState("selectedDialogIndex", 0);
+      changeState("dialog", newDialog);
+      changeState("sequence", "endResult");
+      changeState("nextSequence", "end");
+    }
   };
 
   const handleDialogClick = () => {

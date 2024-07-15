@@ -1,9 +1,9 @@
 import * as Const from "../const";
 import {
   collisionTileArrayType,
-  mapAssetsType,
   mapedCollisionMapType,
 } from "../types/mapTypes";
+
 export const damiMapCollisionTilesArray: collisionTileArrayType = [
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -149,7 +149,7 @@ export const getCollisionArrayByColumn = (
   return collisionMap;
 };
 
-export const collisionArray = (
+export const getCollisionArray = (
   collisionTileArray: collisionTileArrayType
 ): mapedCollisionMapType[] =>
   getCollisionArrayByColumn(
@@ -158,22 +158,7 @@ export const collisionArray = (
     Const.collisionIndex
   );
 
-export const mapedDamiMapTilesArray: mapedCollisionMapType[] = collisionArray(
-  damiMapCollisionTilesArray
-);
-export const mapedDamiMap2TilesArray: mapedCollisionMapType[] = collisionArray(
-  damiMap2CollisionTilesArray
-);
-
-export const mapDamiData: mapAssetsType[] = [
-  {
-    name: "dami1",
-    mapUrl: "DamiMap.png",
-    collisionTileArray: mapedDamiMapTilesArray,
-  },
-  {
-    name: "dami2",
-    mapUrl: "DamiMap2.png",
-    collisionTileArray: mapedDamiMap2TilesArray,
-  },
-];
+export const mapedDamiMapTilesArray: mapedCollisionMapType[] =
+  getCollisionArray(damiMapCollisionTilesArray);
+export const mapedDamiMap2TilesArray: mapedCollisionMapType[] =
+  getCollisionArray(damiMap2CollisionTilesArray);

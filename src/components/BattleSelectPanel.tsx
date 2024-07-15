@@ -1,8 +1,8 @@
 import { useState } from "react";
 import BattleSelectButton from "./BattleSelectButton";
 import { Player } from "../types/playerTypes";
-import { enemiesType } from "../types/enemiesType";
 import { motion } from "framer-motion";
+import { enemiesType } from "../assets/enemies";
 type OnMove = {
   label: string;
   ap: number;
@@ -13,6 +13,7 @@ type Props = {
   enemies: enemiesType[];
   onMove: ({ label, ap, targetIndex }: OnMove) => void;
 };
+
 function BattleSelectPanel({ onMove, player, enemies }: Props) {
   const [mode, setmode] = useState<
     "main" | "magic" | "items" | "escape" | "enemyselect"
@@ -71,7 +72,9 @@ function BattleSelectPanel({ onMove, player, enemies }: Props) {
           />
           <BattleSelectButton
             label={"にげる"}
-            onclick={(label) => setmode("escape")}
+            onclick={(label) =>
+              onMove({ label: "escape", ap: 0, targetIndex: 0 })
+            }
           />
         </div>
       )}

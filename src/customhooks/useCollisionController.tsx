@@ -1,11 +1,10 @@
 import * as React from "react";
 import { Component, useState } from "react";
-import { collisionArray, mapDamiData } from "../assets/collisionTiles";
 import { directionType, Npc, playerPosType } from "../types/playerTypes";
 import { collisionChecker } from "../helpers/collisionChecker";
 import { useAppSelector } from "../store/store";
 import { doorAssets } from "../assets/doors";
-import { doorAssetType } from "../types/mapTypes";
+import { doorAssetType, mapedCollisionMapType } from "../types/mapTypes";
 
 type useCollisionControllerProps = {
   active: playerPosType;
@@ -19,8 +18,8 @@ function useCollisionController({
 }: useCollisionControllerProps) {
   let isCollision = false;
 
-  const collisionController = () => {
-    mapDamiData[0].collisionTileArray.forEach((collisionBlock, i) => {
+  const collisionController = (collisionTileArray: mapedCollisionMapType[]) => {
+    collisionTileArray.forEach((collisionBlock, i) => {
       collisionChecker({
         direction,
         passive: collisionBlock,
@@ -51,9 +50,9 @@ function useCollisionController({
   };
 
   let collisionDoor: doorAssetType | null;
-  const doorCollisionController = () => {
+  const doorCollisionController = (mapName: string) => {
     doorAssets.forEach((door, i) => {
-      if (mapDamiData[0].name !== door.locatedMapName) return;
+      if (mapName !== door.locatedMapName) return;
       collisionChecker({
         direction,
         passive: door.locatedPos,

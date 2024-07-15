@@ -1,12 +1,12 @@
 import * as React from "react";
 import { Component, useEffect, useState } from "react";
 import BattleSelectPanel from "./BattleSelectPanel";
-import { enemiesType } from "../types/enemiesType";
 import { Player } from "../types/playerTypes";
 import { enemiesGenerate } from "../helpers/enemiesReducer";
 import { getRandomUniqueNumbers } from "../helpers/functions";
 import useSequence, { Dialog } from "../hooks/useSequence";
 import { motion, useAnimate } from "framer-motion";
+import { enemiesComponentMapping } from "../assets/enemies";
 type Props = {
   playerProp: Player;
   onSavePlayer: (player: Player) => void;
@@ -38,20 +38,24 @@ function BattleScene({ playerProp, onSavePlayer }: Props) {
 
   return (
     <>
-      <motion.div animate={playerAnimationControl} style={wrapper}>
-        <div style={container}>
-          <div style={{ display: "flex" }}>
+      <motion.div
+        animate={playerAnimationControl}
+        className="w-full h-full absolute"
+      >
+        <div className="w-full h-full relative">
+          <div className=" flex justify-around w-full h-[60%] items-center bg-white">
             {stats.enemies ? (
               stats.enemies.map((enemy, i) => {
                 return (
                   <motion.div
                     custom={i}
                     animate={enemiesAnimationControl}
-                    style={{ padding: "100px", border: "black 1px solid" }}
                     key={"enemy-display-" + i}
+                    className="flex flex-col items-center justify-center w-[30%] h-[100%]"
                   >
                     {enemy.name}
-                    {enemy.hp}
+                    {` HP：${enemy.hp}`}
+                    {enemiesComponentMapping[enemy.name]}
                   </motion.div>
                 );
               })
@@ -83,17 +87,3 @@ function BattleScene({ playerProp, onSavePlayer }: Props) {
 }
 
 export default BattleScene;
-
-const wrapper: React.CSSProperties = {
-  position: "absolute",
-  width: `100vw`,
-  height: `100vh`,
-  backgroundColor: "skyblue",
-};
-
-const container: React.CSSProperties = {
-  width: "100%",
-  height: "100%",
-  position: "relative",
-  backgroundColor: "beige",
-};

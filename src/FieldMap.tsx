@@ -3,12 +3,13 @@ import { Component, useEffect } from "react";
 import * as Const from "./const";
 import { useAppSelector } from "./store/store";
 import { doorAssets } from "./assets/doors";
-import { mapDamiData } from "./assets/collisionTiles";
+import { Map } from "./Game";
 type PlayerPosType = {
   x: number;
   y: number;
+  currentMap: Map;
 };
-function Map({ x, y }: PlayerPosType) {
+function FieldMap({ x, y, currentMap }: PlayerPosType) {
   return (
     <>
       {/* map */}
@@ -21,7 +22,7 @@ function Map({ x, y }: PlayerPosType) {
           transform: `translate(${-x + Const.screenWidth / 2}px, ${
             -y + Const.screenHeight / 2
           }px)`,
-          backgroundImage: `url(${mapDamiData[0].mapUrl})`,
+          backgroundImage: `url(${currentMap.image})`,
           backgroundSize: "cover",
         }}
       ></div>
@@ -29,7 +30,7 @@ function Map({ x, y }: PlayerPosType) {
       {/* doors */}
       {doorAssets.map((door, i) => {
         return (
-          door.locatedMapName === mapDamiData[0].name && (
+          door.locatedMapName === currentMap.name && (
             <div
               key={i}
               style={{
@@ -40,7 +41,7 @@ function Map({ x, y }: PlayerPosType) {
                 transform: `translate(${
                   -x + Const.screenWidth / 2 + door.locatedPos.x
                 }px, ${-y + Const.screenHeight / 2 + door.locatedPos.y}px)`,
-                backgroundImage: `url(${mapDamiData[0].mapUrl})`,
+                backgroundImage: `url(${currentMap.image})`,
                 backgroundSize: "cover",
               }}
             ></div>
@@ -51,4 +52,4 @@ function Map({ x, y }: PlayerPosType) {
   );
 }
 
-export default Map;
+export default FieldMap;

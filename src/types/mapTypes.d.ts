@@ -7,11 +7,6 @@ export type mapedCollisionMapType = {
   y: number;
 };
 export type mapNamesType = "dami1" | "dami2";
-export type mapAssetsType = {
-  name: mapNamesType;
-  collisionTileArray: mapedCollisionMapType[];
-  mapUrl: mapUrlType;
-};
 
 export type doorPosType = {
   x: number;
