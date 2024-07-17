@@ -1,4 +1,4 @@
-import { enemies } from "../assets/enemies";
+import { enemies } from "../data/enemies";
 import { enemiesType } from "../types/enemiesType";
 import { getRandomNumber } from "./functions";
 export const enemiesGenerate = () => {

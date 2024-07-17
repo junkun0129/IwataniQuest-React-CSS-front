@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from "react";
-import usePlayer from "./customhooks/usePlayer";
-import useNPCs from "./customhooks/useNPCs";
+import usePlayer from "./hooks/usePlayer";
+import useNPCs from "./hooks/useNPCs";
 import Dialog from "./Dialog";
 import BattleScene from "./components/BattleScene";
 import { motion } from "framer-motion";
 import { encounter } from "./helpers/functions";
 import { Player } from "./types/playerTypes";
-import { DamyMaps, MapPropaty } from "./assets/map";
 import { mapedCollisionMapType } from "./types/mapTypes";
-import { getCollisionArray } from "./assets/collisionTiles";
 import FieldMap from "./FieldMap";
+import { MapPropaty, mapRowData } from "./data/maps";
+import { getCollisionArray } from "./helpers/collisionCaluculation";
 export type FieldState = "walk" | "battle" | "event";
 type Props = { player: Player; onSavePlayer: (player: Player) => void };
 
@@ -24,10 +24,10 @@ function Game({ player, onSavePlayer }: Props) {
 
   const gameLoopRef = useRef<any>(null);
 
-  const { NPCs, npcArray } = useNPCs({ mapState: "dami1" });
+  const { NPCs, npcArray } = useNPCs({ mapState: "world" });
   const [fieldState, setfieldState] = useState<FieldState>("walk");
   const [currentMap, setCurrentMap] = useState<Map>();
-  const [mapName, setmapName] = useState<string>("dami1");
+  const [mapName, setmapName] = useState<string>("world");
   const {
     direction,
     isMoving,
@@ -43,7 +43,7 @@ function Game({ player, onSavePlayer }: Props) {
   // useEffects -----------------------------------------------------------------------
 
   useEffect(() => {
-    const rowMap: MapPropaty = DamyMaps[mapName];
+    const rowMap: MapPropaty = mapRowData[mapName];
     const newCollisionArray = getCollisionArray(rowMap.collisionTile);
     setCurrentMap({
       name: rowMap.name,
@@ -69,7 +69,7 @@ function Game({ player, onSavePlayer }: Props) {
   //const functions -----------------------------------------------------------------------
   const gameloop = () => {
     if (fieldState === "walk") {
-      handleEncount();
+      // handleEncount();
       playerUpdate();
     }
     gameLoopRef.current = requestAnimationFrame(gameloop);

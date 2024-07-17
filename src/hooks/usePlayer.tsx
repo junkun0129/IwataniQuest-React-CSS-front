@@ -35,6 +35,7 @@ function usePlayer(
     collisionController,
     npcCollisionController,
     doorCollisionController,
+    itemCollisionController,
   } = useCollisionController({
     active: playerPos,
     direction,

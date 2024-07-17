@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Player } from "../types/playerTypes";
-import { enemies, enemiesType } from "../assets/enemies";
+import { enemies, enemiesType } from "../data/enemies";
 import { enemiesGenerate } from "../helpers/enemiesReducer";
 import { getRandomUniqueNumbers } from "../helpers/functions";
 import { useAnimate, useAnimation, useAnimationControls } from "framer-motion";

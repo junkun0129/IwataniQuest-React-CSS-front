@@ -1,7 +1,7 @@
 // defaultValuesSlice.ts
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Player } from "../../types/playerTypes";
-import { playerDamiData } from "../../damidata/playerDamiData";
+import { playerDamiData } from "../../data/playerDamiData";
 type Props = {
   player: Player;
 };

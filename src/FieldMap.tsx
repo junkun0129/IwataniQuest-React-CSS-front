@@ -2,8 +2,9 @@ import * as React from "react";
 import { Component, useEffect } from "react";
 import * as Const from "./const";
 import { useAppSelector } from "./store/store";
-import { doorAssets } from "./assets/doors";
+import { doorAssets } from "./data/doors";
 import { Map } from "./Game";
+import { damyMapItems } from "./data/items";
 type PlayerPosType = {
   x: number;
   y: number;
@@ -26,6 +27,24 @@ function FieldMap({ x, y, currentMap }: PlayerPosType) {
           backgroundSize: "cover",
         }}
       ></div>
+
+      {/* items */}
+      {damyMapItems.map((item, i) => {
+        return (
+          <div
+            key={"mapitem-" + i}
+            style={{
+              position: "absolute",
+              width: `${Const.screenTileSize}px`,
+              height: `${Const.screenTileSize}px`,
+              backgroundColor: "lightskyblue",
+              transform: `translate(${-x + Const.screenWidth / 2 + item.x}px, ${
+                -y + Const.screenHeight / 2 + item.y
+              }px)`,
+            }}
+          ></div>
+        );
+      })}
 
       {/* doors */}
       {doorAssets.map((door, i) => {

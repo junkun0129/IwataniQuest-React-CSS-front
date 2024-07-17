@@ -1,8 +1,8 @@
 import { useState } from "react";
-import BattleSelectButton from "./BattleSelectButton";
 import { Player } from "../types/playerTypes";
 import { motion } from "framer-motion";
-import { enemiesType } from "../assets/enemies";
+import { enemiesType } from "../data/enemies";
+import BattleSelectButton from "./BattleSelectButton";
 type OnMove = {
   label: string;
   ap: number;

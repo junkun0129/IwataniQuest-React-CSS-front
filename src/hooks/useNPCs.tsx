@@ -2,8 +2,7 @@ import * as React from "react";
 import { Component, useEffect, useState } from "react";
 import * as Const from "../const";
 import { Npc, playerPosType } from "../types/playerTypes";
-import { npcInstances } from "../assets/npcs";
-import { useAppSelector } from "../store/store";
+import { npcInstances } from "../data/npcs";
 type Props = { mapState: string };
 function useNPCs({ mapState }: Props) {
   const [npcArray, setNpcArray] = useState<Npc[]>(npcInstances);

@@ -6,7 +6,7 @@ import { enemiesGenerate } from "../helpers/enemiesReducer";
 import { getRandomUniqueNumbers } from "../helpers/functions";
 import useSequence, { Dialog } from "../hooks/useSequence";
 import { motion, useAnimate } from "framer-motion";
-import { enemiesComponentMapping } from "../assets/enemies";
+import { enemiesComponentMapping } from "../data/enemies";
 type Props = {
   playerProp: Player;
   onSavePlayer: (player: Player) => void;
@@ -16,7 +16,6 @@ function BattleScene({ playerProp, onSavePlayer }: Props) {
   const {
     stats,
     changeState,
-    resetStats,
     handleDialogClick,
     handlePlayerMove,
     playerAnimationControl,
