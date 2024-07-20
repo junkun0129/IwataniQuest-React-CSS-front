@@ -10,11 +10,14 @@ import {
 import useDirectionHandler from "./useDirectionHandler";
 import useCollisionController from "./useCollisionController";
 import { Map } from "../Game";
+import { MapItem } from "../data/items";
 function usePlayer(
   npcArray: Npc[],
   initialPosition: playerPosType,
   currentMap: Map | undefined,
-  setMapName: (name: string) => void
+  setMapName: (name: string) => void,
+  mapItems: MapItem[],
+  setMapItem: (mapItems: MapItem[]) => void
 ) {
   const direction = useDirectionHandler();
   const [playerPos, setPlayerPos] = useState<playerPosType>(initialPosition);
@@ -48,7 +51,7 @@ function usePlayer(
     const isCollision = collisionController(currentMap.collisionArray);
     const collisionNpc = npcCollisionController();
     const collisionDoor = doorCollisionController(currentMap.name);
-
+    const collisionItem = itemCollisionController(currentMap.name, mapItems);
     if (isCollision) {
       setIsMoving(false);
       setPreCollisionDirection(direction);

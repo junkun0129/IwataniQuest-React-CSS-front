@@ -1,8 +1,6 @@
 import * as React from "react";
-import { Component, useState } from "react";
 import { directionType, Npc, playerPosType } from "../types/playerTypes";
 import { collisionChecker } from "../helpers/collisionChecker";
-import { useAppSelector } from "../store/store";
 import { doorAssets } from "../data/doors";
 import { doorAssetType, mapedCollisionMapType } from "../types/mapTypes";
 import { MapItem } from "../data/items";

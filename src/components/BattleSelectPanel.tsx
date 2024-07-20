@@ -57,6 +57,7 @@ function BattleSelectPanel({ onMove, player, enemies }: Props) {
     setSelectStats({ label: null, ap: null, targetIndex: null });
     setmode("main");
   };
+
   return (
     <>
       {mode === "main" && (
@@ -80,7 +81,7 @@ function BattleSelectPanel({ onMove, player, enemies }: Props) {
       )}
       {mode === "magic" && (
         <>
-          {player.status.magics.map((magic, i) => (
+          {player.magics.map((magic, i) => (
             <div
               key={"magic-select-" + i}
               onClick={() => selectMagic(magic.magic_name, magic.magic_ap)}

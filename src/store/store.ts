@@ -12,14 +12,14 @@ const persistConfig = {
   storage,
 };
 
-const rootReducer = combineReducers({
-  UserReducer,
-});
+const rootReducer = combineReducers({});
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
-  reducer: persistedReducer,
+  reducer: {
+    UserReducer,
+  },
 });
 
 export const persistor = persistStore(store);

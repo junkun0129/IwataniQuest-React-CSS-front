@@ -149,9 +149,7 @@ const useSequence = ({ player }: { player: Player }) => {
       let newStatus = { ...stats.player.status };
       const { activeIndexs } = action;
       activeIndexs.map((index) => {
-        console.log(enemies[index], "enemy");
-        console.log(enemies[index].at);
-        newStatus.hp -= enemies[index].at;
+        newStatus.hp -= stats.enemies[index].at;
       });
       const newPlayer = { ...stats.player, status: newStatus };
       changeState("player", newPlayer);
@@ -164,7 +162,6 @@ const useSequence = ({ player }: { player: Player }) => {
     targetIndex: number;
   }) => {
     const { label, ap, targetIndex } = selectedStats;
-    console.log(label, "labelllll");
     if (label === "attack" || label === "magic") {
       const targetName = stats.enemies[targetIndex].name;
       let newDialog: Dialog[] = [];

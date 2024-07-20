@@ -1,4 +1,4 @@
-import { Magic, Player } from "../types/playerTypes";
+import { Magic, Player, RowPlayer } from "../types/playerTypes";
 
 const magicArray: Magic[] = [
   {
@@ -28,7 +28,24 @@ export const playerDamiData: Player = {
     ap: 2,
     mp: 3,
     lev: 1,
-    magics: magicArray,
   },
+  magics: magicArray,
+  map: { image: "", name: "", collisionArray: [{ x: 0, y: 0 }] },
   position: { x: 1000, y: 600 },
+  items: [],
+};
+
+export const dummyPlayerRowData: RowPlayer = {
+  user_id: "user_id",
+  user_name: "junpei iwatani",
+  status: {
+    hp: 10,
+    ap: 2,
+    mp: 3,
+    lev: 1,
+  },
+  magics: magicArray,
+  position: { x: 1000, y: 600 },
+  map_name: "",
+  items: [],
 };

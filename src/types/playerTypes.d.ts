@@ -1,3 +1,5 @@
+import { Item, MapItem } from "../data/items";
+import { Map } from "../Game";
 import { mapNamesType } from "./mapTypes";
 
 export type directionType = "up" | "down" | "left" | "right" | undefined;
@@ -26,18 +28,33 @@ export type playerStatsType = {
   at: number;
 };
 
+export type Status = {
+  hp: number;
+  ap: number;
+  mp: number;
+  lev: number;
+};
+
 export type Player = {
   user_id: string;
   user_name: string;
-  status: {
-    hp: number;
-    ap: number;
-    mp: number;
-    lev: number;
-    magics: Magic[];
-  };
+  status: Status;
+  magics: Magic[];
+  items: Item[];
   position: playerPosType;
+  map: Map;
 };
+
+export type RowPlayer = {
+  user_id: string;
+  user_name: string;
+  status: Status;
+  magics: Magic[];
+  items: Item[];
+  position: playerPosType;
+  map_name: string;
+};
+
 export type Magic = {
   magic_id: string;
   magic_name: string;
