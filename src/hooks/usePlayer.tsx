@@ -5,19 +5,22 @@ import {
   directionType,
   Npc,
   picturePxType,
+  Player,
   playerPosType,
 } from "../types/playerTypes";
 import useDirectionHandler from "./useDirectionHandler";
 import useCollisionController from "./useCollisionController";
 import { Map } from "../Game";
-import { MapItem } from "../data/items";
+import { Item, MapItem, MapItemObeject } from "../data/items";
 function usePlayer(
   npcArray: Npc[],
   initialPosition: playerPosType,
   currentMap: Map | undefined,
   setMapName: (name: string) => void,
-  mapItems: MapItem[],
-  setMapItem: (mapItems: MapItem[]) => void
+  mapItems: MapItemObeject,
+  setMapItem: (mapItems: MapItemObeject) => void,
+  player: Player,
+  setPlayer: (player: Player) => void
 ) {
   const direction = useDirectionHandler();
   const [playerPos, setPlayerPos] = useState<playerPosType>(initialPosition);
@@ -66,6 +69,22 @@ function usePlayer(
     if (collisionDoor) {
       setPlayerPos(collisionDoor.toPlayerPos);
       setMapName(collisionDoor.toMapName);
+    }
+
+    if (collisionItem) {
+      const { id, name, point } = collisionItem;
+      const newMapItems = { ...mapItems };
+      delete newMapItems[id];
+      setMapItem(newMapItems);
+
+      const pickedItem: Item = {
+        id,
+        name,
+        point,
+      };
+      const newPlayerItems = [...player.items, pickedItem];
+      const newPlayer: Player = { ...player, items: newPlayerItems };
+      setPlayer(newPlayer);
     }
   }, [playerPos]);
 

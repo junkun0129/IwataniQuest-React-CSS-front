@@ -10,10 +10,10 @@ import { mapedCollisionMapType } from "./types/mapTypes";
 import FieldMap from "./FieldMap";
 import { MapPropaty, mapRowData } from "./data/maps";
 import { getCollisionArray } from "./helpers/collisionCaluculation";
-import { damyMapItems, MapItem } from "./data/items";
+import { damyMapItems, MapItem, MapItemObeject } from "./data/items";
 export type FieldState = "walk" | "battle" | "event";
 type Props = {
-  player: Player;
+  playerProps: Player;
   onSavePlayer: (player: Player) => void;
 };
 
@@ -23,15 +23,15 @@ export type Map = {
   collisionArray: mapedCollisionMapType[];
 };
 
-function Game({ player, onSavePlayer }: Props) {
+function Game({ playerProps, onSavePlayer }: Props) {
   //values -----------------------------------------------------------------------
   const gameLoopRef = useRef<any>(null);
-
+  const [player, setplayer] = useState(playerProps);
   const { NPCs, npcArray } = useNPCs({ mapState: "world" });
   const [fieldState, setfieldState] = useState<FieldState>("walk");
   const [currentMap, setCurrentMap] = useState<Map>();
   const [mapName, setmapName] = useState<string>("world");
-  const [mapItems, setmapItems] = useState<MapItem[]>(damyMapItems);
+  const [mapItems, setmapItems] = useState<MapItemObeject>(damyMapItems);
   const {
     direction,
     isMoving,
@@ -46,7 +46,9 @@ function Game({ player, onSavePlayer }: Props) {
     currentMap,
     setmapName,
     mapItems,
-    setmapItems
+    setmapItems,
+    player,
+    setplayer
   );
   let encounterCoolDown = 0;
 
@@ -62,6 +64,10 @@ function Game({ player, onSavePlayer }: Props) {
       collisionArray: newCollisionArray,
     });
   }, []);
+
+  useEffect(() => {
+    console.log(player);
+  }, [player]);
 
   useEffect(() => {
     gameloop();
@@ -80,7 +86,7 @@ function Game({ player, onSavePlayer }: Props) {
   //const functions -----------------------------------------------------------------------
   const gameloop = () => {
     if (fieldState === "walk") {
-      handleEncount();
+      // handleEncount();
       playerUpdate();
     }
     gameLoopRef.current = requestAnimationFrame(gameloop);
@@ -121,7 +127,12 @@ function Game({ player, onSavePlayer }: Props) {
           }
         >
           {currentMap && (
-            <FieldMap x={playerPos.x} y={playerPos.y} currentMap={currentMap} />
+            <FieldMap
+              x={playerPos.x}
+              y={playerPos.y}
+              currentMap={currentMap}
+              mapItemsObject={mapItems}
+            />
           )}
 
           <NPCs x={playerPos.x} y={playerPos.y} />

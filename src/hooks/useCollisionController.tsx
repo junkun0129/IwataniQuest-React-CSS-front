@@ -3,7 +3,7 @@ import { directionType, Npc, playerPosType } from "../types/playerTypes";
 import { collisionChecker } from "../helpers/collisionChecker";
 import { doorAssets } from "../data/doors";
 import { doorAssetType, mapedCollisionMapType } from "../types/mapTypes";
-import { MapItem } from "../data/items";
+import { MapItem, MapItemObeject } from "../data/items";
 
 type useCollisionControllerProps = {
   active: playerPosType;
@@ -65,7 +65,11 @@ function useCollisionController({
   };
 
   let collisionItem: MapItem | null;
-  const itemCollisionController = (mapName: string, items: MapItem[]) => {
+  const itemCollisionController = (
+    mapName: string,
+    itemsObject: MapItemObeject
+  ) => {
+    const items = Object.values(itemsObject);
     items.forEach((item, i) => {
       if (mapName !== item.map_name) return;
       collisionChecker({

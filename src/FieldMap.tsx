@@ -4,13 +4,14 @@ import * as Const from "./const";
 import { useAppSelector } from "./store/store";
 import { doorAssets } from "./data/doors";
 import { Map } from "./Game";
-import { damyMapItems } from "./data/items";
+import { damyMapItems, MapItemObeject } from "./data/items";
 type PlayerPosType = {
   x: number;
   y: number;
   currentMap: Map;
+  mapItemsObject: MapItemObeject;
 };
-function FieldMap({ x, y, currentMap }: PlayerPosType) {
+function FieldMap({ x, y, currentMap, mapItemsObject }: PlayerPosType) {
   return (
     <>
       {/* map */}
@@ -29,7 +30,7 @@ function FieldMap({ x, y, currentMap }: PlayerPosType) {
       ></div>
 
       {/* items */}
-      {damyMapItems.map((item, i) => {
+      {Object.values(mapItemsObject).map((item, i) => {
         return (
           <div
             key={"mapitem-" + i}

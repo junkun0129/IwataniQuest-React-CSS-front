@@ -15,7 +15,9 @@ function App() {
 
   return (
     <>
-      {player && <Game player={player} onSavePlayer={handleSavePlayer}></Game>}
+      {player && (
+        <Game playerProps={player} onSavePlayer={handleSavePlayer}></Game>
+      )}
     </>
   );
 }
